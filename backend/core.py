@@ -1,3 +1,4 @@
+import os
 from typing import Any, Dict
 
 from dotenv import load_dotenv
@@ -5,13 +6,16 @@ from langchain.agents import create_agent
 from langchain.chat_models import init_chat_model
 from langchain.messages import ToolMessage
 from langchain.tools import tool
+from langchain_nvidia_ai_endpoints import NVIDIAEmbeddings
 from langchain_pinecone import PineconeVectorStore
-from langchain_openai import OpenAIEmbeddings
 
 load_dotenv()
 
 # Initialize embeddings (same as ingestion.py)
-embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
+embeddings = NVIDIAEmbeddings(
+    model="nvidia/nemotron-3-embed-1b",
+    api_key=os.environ["NVIDIA_API_KEY"],
+)
 
 #Initialize vector store
 vectorstore = PineconeVectorStore(
